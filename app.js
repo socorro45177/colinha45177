@@ -150,14 +150,21 @@ function atualizarCargo(cargoCfg) {
 // -- 5. Exporta a colinha como imagem --------------------------------------
 function ligarBotaoGerar() {
   document.getElementById("btn-gerar").addEventListener("click", () => {
-    html2canvas(document.getElementById("colinha-card"), { scale: 2 }).then(
-      (canvas) => {
-        const link = document.createElement("a");
-        link.download = "socorro-45177-2026.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      }
-    );
+    
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    if (isIOS && navigator.canShare) {
+      compartilharImagem();
+    } else {
+      html2canvas(document.getElementById("colinha-card"), { scale: 2 }).then(
+        (canvas) => {
+          const link = document.createElement("a");
+          link.download = "socorro-45177-2026.png";
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+        }
+      );
+    }
   });
 }
 
